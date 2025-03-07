@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { loginWithSpotify, getAccessTokenFromUrl } from "./spotifyAuth";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("spotifyToken");
+    const newToken = getAccessTokenFromUrl();
+
+    if (newToken) {
+      setToken(newToken);
+      localStorage.setItem("spotifyToken", newToken);
+      window.history.pushState({}, null, "/"); // Remove token from URL
+    } else if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+      {!token ? (
+        <button onClick={loginWithSpotify} className="bg-green-500 p-4 rounded-md">
+          Login with Spotify
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      ) : (
+        <h1>You're logged in! Now Playing feature will work.</h1>
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
