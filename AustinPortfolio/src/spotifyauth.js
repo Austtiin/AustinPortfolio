@@ -4,7 +4,7 @@
 
 //Github Secret to hide the Spotify Client ID
 
-const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID || 'your-default-client-id';
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 const scopes = [
   "user-read-playback-state",
   "user-modify-playback-state",

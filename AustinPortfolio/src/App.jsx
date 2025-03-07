@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { loginWithSpotify, getAccessTokenFromUrl } from "./spotifyAuth";
+import { loginWithSpotify, getAccessTokenFromUrl } from "./spotifyauth";
 
 function App() {
   const [token, setToken] = useState(null);
